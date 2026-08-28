@@ -1,7 +1,10 @@
 # ROS2
-ros2_ws/build/
-ros2_ws/install/
-ros2_ws/log/
+ros2_ws/**/build/
+ros2_ws/**/install/
+ros2_ws/**/log/
+
+# PlatformIO
+hardware/mcu_firmware/.pio/
 
 # IDE
 .vscode/
@@ -17,3 +20,7 @@ Thumbs.db
 *.so
 *.hex
 *.bin
+hardware/mcu_firmware/test/README
+hardware/mcu_firmware/lib/README
+.gitignore
+hardware/simulide_schemes/warehouse_control_panel.txt

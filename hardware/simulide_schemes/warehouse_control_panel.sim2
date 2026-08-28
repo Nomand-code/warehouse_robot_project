@@ -1,0 +1,67 @@
+<circuit version="2.0.0-" rev="260501" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="1" anicurr="0" ansi="0" width="3200" height="2400" >
+
+<item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="-92,-148" rotation="0" hflip="1" vflip="1" label="Uno-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Package="1- Board">
+<mainCompProps MainCompId="mega328-109" Package="1- mega328_DIP" Frequency="16 MHz" ForceFreq="true" savePGM="false" Program="../mcu_firmware/.pio/build/uno/firmware.hex" Auto_Load="false" saveEepr="true" MainMcu="false" SerialMon="-1" />
+</item>
+
+<item itemtype="Aip31068_i2c" CircId="Aip31068_i2c-2" mainComp="false" Show_id="true" Show_Val="false" Pos="108,-156" rotation="0" hflip="1" vflip="1" label="Aip31068_i2c-2" idLabPos="70,-82" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="2" Cols="16" Control_Code="62" Frequency="100 _kHz" />
+
+<item itemtype="Resistor" CircId="Resistor-4" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="96,-84" rotation="0" hflip="1" vflip="1" label="Resistor-4" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="4.7 kΩ" />
+
+<item itemtype="Resistor" CircId="Resistor-5" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="144,-44" rotation="0" hflip="1" vflip="1" label="Resistor-5" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="4.7 kΩ" />
+
+<item itemtype="Resistor" CircId="Resistor-19" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="136,0" rotation="0" hflip="1" vflip="1" label="Resistor-19" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="4.7 kΩ" />
+
+<item itemtype="Push" CircId="Push-21" mainComp="false" Show_id="true" Show_Val="false" Pos="212,60" rotation="90" hflip="1" vflip="1" label="Emergency stop" idLabPos="-43.6603,29.6271" labelrot="-90" valLabPos="-16,20" valLabRot="0" Norm_Close="false" DT="false" Poles="1" />
+
+<item itemtype="Ground" CircId="Ground-31" mainComp="false" Show_id="false" Show_Val="false" Pos="216,160" rotation="0" hflip="1" vflip="1" label="Ground-31" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Switch" CircId="Switch-33" mainComp="false" Show_id="true" Show_Val="false" Pos="112,128" rotation="0" hflip="1" vflip="1" label="MANUAL" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" DT="false" Poles="1" Checked="false" />
+
+<item itemtype="Esp01" CircId="Esp01-36" mainComp="false" Show_id="false" Show_Val="false" Pos="292,-64" rotation="0" hflip="1" vflip="1" label="Esp01-36" idLabPos="-20,-34" labelrot="0" valLabPos="-16,20" valLabRot="0" Baudrate="115200 _Bd" Debug="true" SerialMon="false" />
+
+<item itemtype="Node" CircId="Node-8" mainComp="false" Pos="60,-52" />
+
+<item itemtype="Node" CircId="Node-17" mainComp="false" Pos="124,-148" />
+
+<item itemtype="Node" CircId="Node-18" mainComp="false" Pos="132,-148" />
+
+<item itemtype="Node" CircId="Node-20" mainComp="false" Pos="80,-44" />
+
+<item itemtype="Node" CircId="Node-23" mainComp="false" Pos="212,44" />
+
+<item itemtype="Connector" uid="Connector-14" startpinid="Uno-1-5V0" endpinid="Node-8-0" pointList="60,-52,60,-52" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="Node-8-2" endpinid="Resistor-4-lPin" pointList="60,-52,80,-52,80,-84" />
+
+<item itemtype="Connector" uid="Connector-51" startpinid="Uno-1-A4" endpinid="Node-17-1" pointList="60,-124,124,-124,124,-148" />
+
+<item itemtype="Connector" uid="Connector-52" startpinid="Resistor-4-rPin" endpinid="Node-17-0" pointList="112,-84,112,-148,124,-148" />
+
+<item itemtype="Connector" uid="Connector-53" startpinid="Node-17-2" endpinid="Aip31068_i2c-2PinSDA" pointList="124,-148,124,-148" />
+
+<item itemtype="Connector" uid="Connector-54" startpinid="Uno-1-A5" endpinid="Node-18-1" pointList="60,-132,132,-132,132,-148" />
+
+<item itemtype="Connector" uid="Connector-55" startpinid="Resistor-5-rPin" endpinid="Node-18-0" pointList="160,-44,160,-148,132,-148" />
+
+<item itemtype="Connector" uid="Connector-56" startpinid="Node-18-2" endpinid="Aip31068_i2c-2PinSCL" pointList="132,-148,132,-148" />
+
+<item itemtype="Connector" uid="Connector-57" startpinid="Node-20-1" endpinid="Resistor-19-lPin" pointList="80,-44,80,0,120,0" />
+
+<item itemtype="Connector" uid="Connector-58" startpinid="Node-8-1" endpinid="Node-20-0" pointList="60,-52,60,-44,80,-44" />
+
+<item itemtype="Connector" uid="Connector-61" startpinid="Push-21-switch0pinN" endpinid="Uno-1-GND1" pointList="212,76,60,76,60,-60" />
+
+<item itemtype="Connector" uid="Connector-68" startpinid="Node-23-2" endpinid="Push-21-pinP0" pointList="212,44,212,44" />
+
+<item itemtype="Connector" uid="Connector-67" startpinid="Resistor-19-rPin" endpinid="Node-23-0" pointList="152,0,212,0,212,44" />
+
+<item itemtype="Connector" uid="Connector-66" startpinid="Uno-1-2" endpinid="Node-23-1" pointList="-84,-116,212,-116,212,44" />
+
+<item itemtype="Connector" uid="Connector-59" startpinid="Node-20-2" endpinid="Resistor-5-lPin" pointList="80,-44,128,-44" />
+
+<item itemtype="Connector" uid="Connector-85" startpinid="Switch-33-switch0pinN" endpinid="Ground-31-Gnd" pointList="128,128,216,128,216,144" />
+
+<item itemtype="Connector" uid="Connector-90" startpinid="Switch-33-pinP0" endpinid="Uno-1-3" pointList="96,128,-24,128,-24,-108,-84,-108" />
+
+</circuit>
