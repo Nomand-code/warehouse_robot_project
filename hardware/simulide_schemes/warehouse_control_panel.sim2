@@ -16,13 +16,13 @@
 
 <item itemtype="Ground" CircId="Ground-31" mainComp="false" Show_id="false" Show_Val="false" Pos="216,160" rotation="0" hflip="1" vflip="1" label="Ground-31" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
-<item itemtype="Switch" CircId="Switch-33" mainComp="false" Show_id="true" Show_Val="false" Pos="112,128" rotation="0" hflip="1" vflip="1" label="MANUAL" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" DT="false" Poles="1" Checked="false" />
+<item itemtype="Switch" CircId="Switch-33" mainComp="false" Show_id="true" Show_Val="false" Pos="112,128" rotation="0" hflip="1" vflip="1" label="MANUAL" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" DT="false" Poles="1" Checked="true" />
 
 <item itemtype="Esp01" CircId="Esp01-36" mainComp="false" ShowProp="Baudrate" Show_id="false" Show_Val="true" Pos="348,-40" rotation="0" hflip="1" vflip="1" label="Esp01-36" idLabPos="-20,-34" labelrot="0" valLabPos="-16,20" valLabRot="0" Baudrate="9600 _Bd" Debug="true" SerialMon="false" />
 
 <item itemtype="SerialPort" CircId="SerialPort-37" mainComp="false" Show_id="false" Show_Val="false" Pos="296,180" rotation="0" hflip="1" vflip="1" label="SerialPort-37" idLabPos="-20,-32" labelrot="0" valLabPos="-16,20" valLabRot="0" Auto="false" Port="/tmp/arduino_controll" Baudrate="9600 _Bd" DataBits="8 _bits" StopBits="1 _bits" SerialMon="false" />
 
-<item itemtype="Potentiometer" CircId="Potentiometer-38" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="232,104" rotation="0" hflip="1" vflip="1" label="Potentiometer-38" idLabPos="-16,-40" labelrot="0" valLabPos="15,-20" valLabRot="0" Resistance="1 kΩ" Value_Ohm="0 Ω" Slider="false" Scale="1" />
+<item itemtype="Potentiometer" CircId="Potentiometer-38" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="232,104" rotation="0" hflip="1" vflip="1" label="Potentiometer-38" idLabPos="-16,-40" labelrot="0" valLabPos="15,-20" valLabRot="0" Resistance="1 kΩ" Value_Ohm="615 Ω" Slider="false" Scale="1" />
 
 <item itemtype="KeyPad" CircId="KeyPad-47" mainComp="false" Show_id="false" Show_Val="false" Pos="-200,-116" rotation="0" hflip="1" vflip="1" label="KeyPad-47" idLabPos="-8,-16" labelrot="0" valLabPos="-16,20" valLabRot="0" Diodes="false" Dir="false" Rows="2" Cols="2" Key_Labels="udlr" />
 

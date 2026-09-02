@@ -1,14 +1,14 @@
 #include <Wire.h>
 #include <Arduino.h>
-#include <Keypad.h> // Подключаем библиотеку клавиатуры
+#include <Keypad.h>
 
-// --- Твои старые настройки LCD и кнопок ---
+// --- Настройки LCD и кнопок ---
 const uint8_t LCD_ADDR = 0x3E;
 const uint8_t btnMode = 3;
 const uint8_t emergencyStopBtn = 2;
 volatile bool emergencyStop = false;
 
-bool isConnected = true; 
+bool isConnected = true; // Примечание: в этом коде эта переменная нигде не меняется на false
 uint8_t btnState = HIGH;
 
 enum class Cmd : uint8_t {
@@ -19,27 +19,25 @@ enum class Cmd : uint8_t {
 
 uint8_t mode = 0; // 0 - AUTO, 1 - MANUAL, 2 - EMERGENCY, 3 - NO LINK
 
-// --- НОВЫЕ НАСТРОЙКИ: Keypad и Потенциометр ---
+// --- Настройки Keypad и Потенциометра ---
 const byte ROWS = 2;
 const byte COLS = 2;
 char keys[ROWS][COLS] = {
-  {'u', 'd'}, // u = up (вперед), d = down (назад)
-  {'l', 'r'}  // l = left, r = right
+  {'u', 'd'}, 
+  {'l', 'r'}  
 };
-// Пины: Row1, Row2, Col1, Col2
 byte rowPins[ROWS] = {9, 8}; 
 byte colPins[COLS] = {7, 6};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
-const uint8_t POT_PIN = A1; // Потенциометр скорости
+const uint8_t POT_PIN = A1;
 
-// Переменные для хранения состояния кнопок (чтобы отправлять их постоянно)
 bool btnU = false;
 bool btnD = false;
 bool btnL = false;
 bool btnR = false;
 
-// --- Функции LCD (твои старые) ---
+// --- Функции LCD ---
 void sendCMD(Cmd cmd) {
     Wire.beginTransmission(LCD_ADDR);
     Wire.write(0x00); 
@@ -82,14 +80,9 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(emergencyStopBtn), emerGencyStop, FALLING);
 }
 
-// --- НОВАЯ ФУНКЦИЯ: Отправка данных в ROS2 ---
 void sendUartData() {
-    int potValue = analogRead(POT_PIN); // Читаем потенциометр (0-1023)
+    int potValue = analogRead(POT_PIN);
     
-    // Формат: MODE,POT,U,D,L,R
-    // MODE: 0=AUTO, 1=MANUAL, 2=EMERGENCY
-    // POT: значение потенциометра
-    // U,D,L,R: 1 если нажата, 0 если нет
     Serial.print(mode);
     Serial.print(",");
     Serial.print(potValue);
@@ -100,15 +93,15 @@ void sendUartData() {
     Serial.print(",");
     Serial.print(btnL ? "1" : "0");
     Serial.print(",");
-    Serial.println(btnR ? "1" : "0"); // println добавит '\r\n' в конце
+    Serial.println(btnR ? "1" : "0");
 }
 
 void loop() {
     static uint8_t oldMode = 255;
     static unsigned long lastSendTime = 0;
-    const unsigned long SEND_INTERVAL = 100; // Отправка раз в 100 мс
+    const unsigned long SEND_INTERVAL = 100;
 
-    // 1. НЕТ СВЯЗИ
+    // 1. НЕТ СВЯЗИ - не актуально пока что т.к uart
     if (!isConnected) {
         if (oldMode != 3) {
             sendCMD(Cmd::Clear);
@@ -116,69 +109,69 @@ void loop() {
             sendText("NO LINK...");
             oldMode = 3;
         }
-        return;
+        
     }
 
     // 2. АВАРИЙНАЯ КНОПКА
     if (emergencyStop) {
-        mode = 2; // Устанавливаем режим EMERGENCY для отправки в ROS
+        mode = 2; // Принудительно режим EMERGENCY
         if (oldMode != 2) {
             sendCMD(Cmd::Clear);
             delay(5);
             sendText("EMERGENCY STOP!");
             oldMode = 2;
         }
+        // Сбрасываем флаг, если физическая кнопка отпущена
         if (digitalRead(emergencyStopBtn) == HIGH) {
             emergencyStop = false;
+            // mode восстановится на следующем цикле из btnMode
         }
-        return;
+    } 
+    else {
+        // 3. ОБЫЧНЫЙ РЕЖИМ (Чтение тумблера AUTO/MANUAL)
+        // Выполняется только если НЕТ аварии
+        uint8_t currentPinState = digitalRead(btnMode);
+        mode = (currentPinState == LOW) ? 1 : 0;
+
+        if (mode != oldMode) {
+            sendCMD(Cmd::Clear);
+            delay(5);
+            sendText("Mode: ");
+            sendText(mode == 0 ? "AUTO" : "MANUAL");
+            Serial.print("Mode changed: ");
+            Serial.println(mode == 0 ? "AUTO" : "MANUAL");
+
+            btnU = false; btnD = false; btnL = false; btnR = false;
+            oldMode = mode;
+        }
     }
 
-    // 3. ОБЫЧНЫЙ РЕЖИМ (Чтение тумблера AUTO/MANUAL)
-    uint8_t currentPinState = digitalRead(btnMode);
-    mode = (currentPinState == LOW) ? 1 : 0;
-
-    if (mode != oldMode) {
-        sendCMD(Cmd::Clear);
-        delay(5);
-        sendText("Mode: ");
-        sendText(mode == 0 ? "AUTO" : "MANUAL");
-        Serial.print("Mode changed: ");
-        Serial.println(mode == 0 ? "AUTO" : "MANUAL");
-
-        btnU = false; 
-        btnD = false; 
-        btnL = false; 
-        btnR = false;
-        oldMode = mode;
-    }
-
-    // 4. ОПРОС КЛАВИАТУРЫ (Keypad)
-    // Сбрасываем все кнопки перед опросом
-    btnU = false; btnD = false; btnL = false; btnR = false;
+     // 4. ОПРОС КЛАВИАТУРЫ (ПРАВИЛЬНАЯ ЛОГИКА ЧЕРЕЗ getKeys)
+if (mode == 1) { // Опрос только в MANUAL
+    keypad.getKeys(); // Эта команда обновляет массив состояний ВСЕХ кнопок
     
-        // 4. ОПРОС КЛАВИАТУРЫ (Исправленная логика)
-    if (mode == 1) { // Опрос только в MANUAL
-        char key = keypad.getKey();
-        KeyState state = keypad.getState();
-
-        if (state == PRESSED || state == HOLD) {
-            if (key == 'u') btnU = true;
-            if (key == 'd') btnD = true;
-            if (key == 'l') btnL = true;
-            if (key == 'r') btnR = true;
+    // Проходимся по всем возможным клавишам (LIST_MAX обычно 10)
+    for (int i = 0; i < LIST_MAX; i++) {
+        if (keypad.key[i].kchar == 'u') {
+            btnU = (keypad.key[i].kstate == PRESSED || keypad.key[i].kstate == HOLD);
         } 
-        else if (state == RELEASED) {
-            if (key == 'u') btnU = false;
-            if (key == 'd') btnD = false;
-            if (key == 'l') btnL = false;
-            if (key == 'r') btnR = false;
+        else if (keypad.key[i].kchar == 'd') {
+            btnD = (keypad.key[i].kstate == PRESSED || keypad.key[i].kstate == HOLD);
+        } 
+        else if (keypad.key[i].kchar == 'l') {
+            btnL = (keypad.key[i].kstate == PRESSED || keypad.key[i].kstate == HOLD);
+        } 
+        else if (keypad.key[i].kchar == 'r') {
+            btnR = (keypad.key[i].kstate == PRESSED || keypad.key[i].kstate == HOLD);
         }
     }
+        } else {
+            // Если режим AUTO или EMERGENCY, принудительно гасим все кнопки
+            btnU = false; btnD = false; btnL = false; btnR = false;
+        }
     
-    
-
     // 5. ОТПРАВКА ДАННЫХ ПО UART (Раз в 100 мс)
+   
     if (millis() - lastSendTime >= SEND_INTERVAL) {
         sendUartData();
         lastSendTime = millis();

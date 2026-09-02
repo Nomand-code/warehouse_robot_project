@@ -10,6 +10,9 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(PkgConfig REQUIRED)
+find_package(geometry_msgs REQUIRED)
+
+
 pkg_check_modules(LIBSERIAL REQUIRED libserial)
 
 # 2. Поиск генераторов сообщений
@@ -27,7 +30,9 @@ add_executable(controll_panel_publisher
   src/controll_panel_publisher.cpp 
   src/uart_listener.cpp
 )
-
+add_executable(main_brain
+              src/main_brain.cpp
+)
 # 5. Подключение заголовочных файлов libserial
 target_include_directories(controll_panel_publisher PRIVATE
   ${LIBSERIAL_INCLUDE_DIRS}
@@ -44,10 +49,16 @@ target_link_libraries(controll_panel_publisher PRIVATE
   ${LIBSERIAL_LIBRARIES}
   ${cpp_typesupport_target} # <-- Вот так теперь правильно линкуется кастомный .msg
 )
+target_link_libraries(main_brain PRIVATE
+  rclcpp::rclcpp
+  geometry_msgs::geometry_msgs
+  ${cpp_typesupport_target} # <-- Вот так теперь правильно линкуется кастомный .msg
+)
 
 # 8. Установка
 install(TARGETS
   controll_panel_publisher
+  main_brain
   DESTINATION lib/${PROJECT_NAME}
 )
 
